@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ListMahasiswa20 {
@@ -23,13 +25,10 @@ public class ListMahasiswa20 {
         });
     }
 
-    int linearSearch(String nim) {
-        for (int i = 0; i < mahasiswas.size(); i++) {
-            if (nim.equals(mahasiswas.get(i).nim)) {
-                return i;
-            }
-        }
-        return -1;
+    int binarySearch(String nim) {
+        Collections.sort(mahasiswas, Comparator.comparing(mhs -> mhs.nim));
+        Mahasiswa20 target = new Mahasiswa20(nim, null, null);
+        return Collections.binarySearch(mahasiswas, target, Comparator.comparing(mhs -> mhs.nim));
     }
 
     public static void main(String[] args) {
@@ -45,7 +44,7 @@ public class ListMahasiswa20 {
         lm.tampil();
         
         // update mahasiswa
-        lm.update(lm.linearSearch("201235"), new Mahasiswa20("201235", "Akhleema Lela", "021xx2"));
+        lm.update(lm.binarySearch("201235"), new Mahasiswa20("201235", "Akhleema Lela", "021xx2"));
         System.out.println("");
         lm.tampil();
     }

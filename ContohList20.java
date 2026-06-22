@@ -30,5 +30,10 @@ public class ContohList20 {
         System.out.printf("Elemen 0: %s total elemen: %s elemen terakhir: %s\n",
                 names.get(0), names.size(), names.get(names.size() - 1));
         System.out.println("Names: " + names.toString());
+
+        names.push("Mei-mei");
+        System.out.printf("Elemen 0: %s total elemen: %s elemen terakhir: %s\n",
+                names.getFirst(), names.size(), names.getLast());
+        System.out.println("Names: " + names.toString());
     }
 }

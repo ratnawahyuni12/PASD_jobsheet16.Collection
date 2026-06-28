@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class TP_SistemNilai20 {
     static List<TP_Mahasiswa20> daftarMahasiswa = new ArrayList<>();
@@ -30,11 +32,12 @@ public class TP_SistemNilai20 {
                 case 2: tampilNilai(); break;
                 case 3: cariNilaiMahasiswa(); break;
                 case 4: urutDataNilai(); break;
-                case 5: System.out.println("Terima kasih, program selesai."); break;
+                case 5: hapusDataMahasiswa(); break;
+                case 6: System.out.println("Terima kasih, program selesai."); break;
                 default: System.out.println("Pilihan tidak tersedia.");
             }
             System.out.println();
-        } while (pilih != 5);
+        } while (pilih != 6);
     }
 
     // ─── Input awal ───────────────────────────────────────────────────────────
@@ -75,7 +78,8 @@ public class TP_SistemNilai20 {
         System.out.println("  2. Tampil Nilai");
         System.out.println("  3. Mencari Nilai Mahasiswa");
         System.out.println("  4. Urut Data Nilai");
-        System.out.println("  5. Keluar");
+        System.out.println("  5. Hapus Data Mahasiswa");
+        System.out.println("  6. Keluar");
         System.out.println("=".repeat(52));
     }
 
@@ -185,5 +189,32 @@ public class TP_SistemNilai20 {
         cetakHeaderNilai("DAFTAR NILAI (Diurutkan Ascending)");
         for (TP_Nilai20 n : terurut) System.out.println(n);
         System.out.println(LINE_NILAI);
+    }
+
+    // ─── Fitur 5: Hapus Data Mahasiswa via Queue ──────────────────────────────
+
+    static void hapusDataMahasiswa() {
+        cetakDaftarMahasiswa();
+        System.out.print("Masukkan NIM yang akan dihapus (pisahkan koma jika lebih dari 1) : ");
+        String input = sc.nextLine().trim();
+
+        Queue<String> antrianHapus = new LinkedList<>();
+        for (String nim : input.split(",")) antrianHapus.offer(nim.trim());
+
+        System.out.println("\nMemproses antrian penghapusan...");
+        System.out.println("-".repeat(45));
+        while (!antrianHapus.isEmpty()) {
+            String nim = antrianHapus.poll();
+            TP_Mahasiswa20 mhs = cariMahasiswa(nim);
+            if (mhs != null) {
+                daftarMahasiswa.remove(mhs);
+                daftarNilai.removeIf(n -> n.mahasiswa.getNim().equalsIgnoreCase(nim));
+                System.out.println(">> NIM " + nim + " (" + mhs.getNama() + ") berhasil dihapus.");
+            } else {
+                System.out.println(">> NIM " + nim + " tidak ditemukan, dilewati.");
+            }
+        }
+        System.out.println("-".repeat(45));
+        cetakDaftarMahasiswa();
     }
 }
